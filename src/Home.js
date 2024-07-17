@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { listDecks } from "./utils/api/index.js";
+import { useNavigate } from "react-router-dom";
+import { listDecks, deleteDeck } from "./utils/api/index.js";
 
 function Home() {
   const navigate = useNavigate();
@@ -24,22 +24,26 @@ function Home() {
     loadDecks();
   }, []);
 
-  const handleDeleteDeck = (deletedDeckId) => {
-    setDecks((currentDecks) => currentDecks.filter((deck) => deck.id !== deletedDeckId));
+  const handleDeleteDeck = async (deckId) => {
+    if (window.confirm("Are you sure you want to delete this deck? This action cannot be undone.")) {
+      try {
+        await deleteDeck(deckId);
+        setDecks((currentDecks) => currentDecks.filter((deck) => deck.id !== deckId));
+      } catch (error) {
+        console.error("Error deleting deck:", error);
+        setError(error);
+      }
+    }
   };
 
-  // a view button brings the user to the deck screen
   const handleView = (deckId) => {
     navigate(`/decks/${deckId}`);
   };
-
-  // a study button brings the user to the Study screen 
 
   const handleStudy = (deckId) => {
     navigate(`/decks/${deckId}/study`);
   };
 
-  // a create deck button brings the user to the Create Deck screen
   const createDeck = () => {
     navigate(`/decks/new`);
   };
@@ -63,7 +67,8 @@ function Home() {
           <p>{deck.description}</p>
           
           <button className="btn btn-secondary mr-2" onClick={() => handleView(deck.id)}>View</button>
-          <button className="btn btn-primary" onClick={() => handleStudy(deck.id)}>Study</button>
+          <button className="btn btn-primary mr-2" onClick={() => handleStudy(deck.id)}>Study</button>
+          <button className="btn btn-danger" onClick={() => handleDeleteDeck(deck.id)}>Delete</button>
         </div>
       </div>
     </div>
