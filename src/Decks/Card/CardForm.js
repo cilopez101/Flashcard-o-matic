@@ -1,50 +1,29 @@
-// CardForm.js
 import React from "react";
 
-function CardForm({
-  front,
-  back,
-  setFront,
-  setBack,
-  handleDone,
-  handleSave,
-  handleCancel,
-}) {
+function CardForm({ front, back, setFront, setBack, handleSave, handleCancel }) {
   return (
     <form onSubmit={handleSave}>
       <div className="form-group">
-        <label htmlFor="front">Front:</label>
-        <br />
+        <label htmlFor="front">Front</label>
         <textarea
-          className="form-control w-100"
-          rows={2}
           id="front"
-          name="front"
-          placeholder="Front side of card"
+          className="form-control"
           value={front}
           onChange={(e) => setFront(e.target.value)}
+          required
         />
       </div>
-
       <div className="form-group">
-        <label htmlFor="back">Back:</label>
-        <br />
+        <label htmlFor="back">Back</label>
         <textarea
-          className="form-control w-100"
-          rows={2}
           id="back"
-          name="back"
-          placeholder="Back side of card"
+          className="form-control"
           value={back}
           onChange={(e) => setBack(e.target.value)}
+          required
         />
       </div>
-      <br />
-      <button
-        type="button"
-        className="btn btn-secondary mr-2"
-        onClick={handleCancel}
-      >
+      <button type="button" className="btn btn-secondary mr-2" onClick={handleCancel}>
         Cancel
       </button>
       <button type="submit" className="btn btn-primary">
